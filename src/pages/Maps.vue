@@ -1,4 +1,5 @@
 <script setup>
+import GoogleMap from '../components/GoogleMap.vue';
 import LeafletMap from '../components/LeafletMap.vue';
 import {ref} from 'vue';
 let map1Zoom = ref(19);
@@ -18,12 +19,13 @@ function getRandomInRange(from, to, fixed) {
     <input type="range" min="1" max="19" step="1" v-model="map1Zoom"> {{ map1Zoom }}
     <button class="button is-primary" @click="map1Lat=40.70735; map1Lng=-74.00753">Go to New York</button>
     <button class="button is-primary" @click="map1Markers.push({lat: getRandomInRange(-90, 90, 4), lng:getRandomInRange(-180, 180, 4)})">Add marker</button>
-    <LeafletMap 
+    <!-- <LeafletMap 
         :lat="map1Lat" 
         :lng="map1Lng" 
         :zoom="map1Zoom" 
         @zoom="map1Zoom=$event"
         @move="map1Lat=$event.lat; map1Lng=$event.lng" :markers="map1Markers"></LeafletMap>
     <LeafletMap lat="32.4269" lng="12.7434" zoom="7"></LeafletMap>
-    <LeafletMap lat="0" lng="0" zoom="12"></LeafletMap>
+    <LeafletMap lat="0" lng="0" zoom="12"></LeafletMap> -->
+    <GoogleMap></GoogleMap>
 </template>
