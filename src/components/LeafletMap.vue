@@ -9,6 +9,8 @@ let zoom = toRefs(props).zoom;
 let lat = toRefs(props).lat;
 let lng = toRefs(props).lng;
 let map = null;
+let zoomDebounce = null;
+
 onMounted(() => {
     map = L.map('map'+id).setView([props.lat, props.lng], props.zoom);
     //var map = L.map('map'+id).setView([59.4269, 24.7434], 19);
@@ -27,7 +29,10 @@ onMounted(() => {
 });
 
 watch(zoom, (newZoom, oldZoom) => {
-    map.setZoom(newZoom);
+    clearTimeout(zoomDebounce);
+    zoomDebounce = setTimeout(() => {
+        map.setZoom(newZoom);
+    }, 1000);
 });
 
 watch(lat, newLat => {
