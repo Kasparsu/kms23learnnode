@@ -1,13 +1,17 @@
 <script setup>
 import L from "leaflet";
 import 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/images/marker-icon.png';
+import 'leaflet/dist/images/marker-shadow.png';
 import { onMounted, useId, watch, toRefs } from 'vue';
-let props = defineProps(['lat', 'lng', 'zoom']);
+let props = defineProps(['lat', 'lng', 'zoom', 'markers']);
 let emit = defineEmits(['zoom', 'move']);
 const id = useId();
 let zoom = toRefs(props).zoom;
 let lat = toRefs(props).lat;
 let lng = toRefs(props).lng;
+let markers = toRefs(props).markers;
+let mapMarkers = [];
 let map = null;
 let zoomDebounce = null;
 
@@ -26,6 +30,12 @@ onMounted(() => {
     map.on('moveend', ev => {
         emit('move', map.getCenter());
     });
+    if(props.markers){
+        props.markers.forEach((marker) => {
+            mapMarkers.push(L.marker(marker).addTo(map));
+        });
+    }
+    
 });
 
 watch(zoom, (newZoom, oldZoom) => {
@@ -41,6 +51,15 @@ watch(lat, newLat => {
 watch(lng, newLng => {
     map.panTo([lat.value, newLng]);
 });
+watch(markers, (newMarkers, oldMarkers)=>{
+    mapMarkers.forEach(marker => {
+        marker.remove();
+    });
+    newMarkers.forEach((marker) => {
+        mapMarkers.push(L.marker(marker).addTo(map));
+    })
+    
+}, {deep: true});
 
 </script>
 
