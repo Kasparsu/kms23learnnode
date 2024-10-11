@@ -1,10 +1,22 @@
 <script setup>
-    
+defineProps(['isMe'])
 </script>
 <template>
-    <article class="message">
-        <div class="message-body">
-           <slot></slot>
+    <div class="columns">
+        <div class="column">
+            <article v-if="!isMe" class="message">
+                <div class="message-body">
+                    <slot></slot>
+                </div>
+            </article>
         </div>
-    </article>
+        <div class="column">
+            <article v-if="isMe" class="message is-primary">
+                <div class="message-body">
+                    <slot></slot>
+                </div>
+            </article>
+        </div>
+    </div>
+
 </template>
