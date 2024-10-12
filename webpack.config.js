@@ -3,7 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
-
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
     entry: './src/index.js',
     output: {
@@ -16,9 +17,11 @@ module.exports = {
         static: {
             directory: path.join(__dirname, 'public'),
         },
+        host: '0.0.0.0',
         compress: true,
         port: 9000,
         historyApiFallback: true,
+        allowedHosts: "all",
     },
     module: {
         rules: [
@@ -75,5 +78,15 @@ module.exports = {
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
         }),
         new Dotenv(),
+        new WorkboxPlugin.GenerateSW({
+            maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+            clientsClaim: true,
+            skipWaiting: true,
+        }),
+        new CopyPlugin({
+            patterns: [
+              { from: "public", to: "" },
+            ],
+        }),
     ],
 };

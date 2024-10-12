@@ -10,6 +10,7 @@ import RickAndMorty from './pages/RickAndMorty.vue';
 import Maps from './pages/Maps.vue';
 import CanvasExample from './pages/CanvasExample.vue';
 import Chat from './pages/Chat.vue';
+import WebApi from './pages/WebApi.vue';
 
 const routes = [
     { path: '/', name: 'ToDo', component: ToDo },
@@ -19,6 +20,8 @@ const routes = [
     { path: '/maps', name: 'Maps', component: Maps},
     { path: '/canvas', name: 'Canvas', component: CanvasExample},
     { path: '/chat', name: 'Chat', component: Chat},
+    { path: '/webapi', name: 'WebApi', component: WebApi},
+     
     /** must be last always */
     { path: '/:pathMatch(.*)*', name: 'Not Found', component: NotFound, meta: { showInTab: false }},
 ];
@@ -31,3 +34,15 @@ const router = createRouter({
 import App from './App.vue';
 
 let app = createApp(App).use(router).mount('#app');
+
+
+if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+            console.log('SW registered:', registration);
+        }).catch(error => {
+            console.log('Error: ', error);
+        })
+        
+    });
+}
