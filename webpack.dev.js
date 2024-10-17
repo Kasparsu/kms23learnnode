@@ -35,26 +35,6 @@ module.exports = merge(common, {
                     }
                 ],
             },
-            {
-                test: /\.njk$/,
-                use: [
-                    {
-                        loader: 'simple-nunjucks-loader',
-                        options: {}
-                    }
-                ]
-            },
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader'
-            },
-            {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset/resource',
-                generator: {
-                    filename: '[name][ext]'
-                }
-            },
         ],
     },
 });

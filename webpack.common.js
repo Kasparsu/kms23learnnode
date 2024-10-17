@@ -12,7 +12,21 @@ module.exports = {
         clean: true,
         publicPath: '/',
     },
-   
+    module: {
+        rules: [
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: '[name][ext]'
+                }
+            },
+        ]
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
