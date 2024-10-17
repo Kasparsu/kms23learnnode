@@ -1,28 +1,10 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
-const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
-module.exports = {
-    entry: './src/index.js',
-    output: {
-        filename: 'main.js',
-        path: path.resolve(__dirname, 'dist'),
-        clean: true,
-        publicPath: '/',
-    },
-    devServer: {
-        static: {
-            directory: path.join(__dirname, 'public'),
-        },
-        host: '0.0.0.0',
-        compress: true,
-        port: 9000,
-        historyApiFallback: true,
-        allowedHosts: "all",
-    },
+
+module.exports = merge(common, {
+    mode: 'production',
     module: {
         rules: [
             {
@@ -67,17 +49,6 @@ module.exports = {
         ],
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            //base: '/'
-        }),
-        new VueLoaderPlugin(),
-        new webpack.DefinePlugin({
-            __VUE_OPTIONS_API__: true,
-            __VUE_PROD_DEVTOOLS__: false,
-            __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
-        }),
-        new Dotenv(),
         new WorkboxPlugin.GenerateSW({
             maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
             clientsClaim: true,
@@ -88,5 +59,5 @@ module.exports = {
               { from: "public", to: "" },
             ],
         }),
-    ],
-};
+    ]
+});
